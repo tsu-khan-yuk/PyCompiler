@@ -1,0 +1,39 @@
+AxPlusOne   MACRO
+  Inc   AX
+ENDM
+
+DATA    SEGMENT
+HEX16   DW  15H
+DEC10   DD  10D
+BIN2    DB  10010101B
+STRING  DB  "sTring"
+DATA    ENDS
+
+DATA2   SEGMENT
+VV1     DW  5H
+DATA2   ENDS
+
+CODE    SEGMENT
+        ASSUME CS:CODE, DS:DATA, ES:DATA2
+        Val   DW  15D
+    Begin:
+
+        Jbe     Jump
+        Jump
+
+        Mov     BX, VV1[BX + DI]
+        Mov     BX, 0
+        Mov     DI, 0
+        Mov     AX, CS:Val[BX + DI]
+        AxPlusOne
+        Or      HEX16[BP + SI], AX
+        And     BIN2[BP + DI], AH
+        Mov     SI, 2
+        Mov     AX, 15
+        Cmp     CS:Val[BP + SI], AX
+        Adc     AX, BX
+        Cbw
+    Jbe     Begin
+
+Code    ENDS
+END

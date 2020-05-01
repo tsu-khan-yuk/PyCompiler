@@ -29,6 +29,16 @@ for i in assembly:
             listing.write(">>> Ідентрифікатор директиви закінчення макровизначення\n\n")
         elif j == "END":
             listing.write(">>> Ідентифікатор директиви закінчення програми\n\n")
+        elif j == "AX":
+            listing.write(">>> Ідентифікатор регістора аккумулятора")
+        elif j == "BX":
+            listing.write(">>> Ідентифікатор ")
+        elif j == "DI":
+            listing.write(">>> ")
+        elif j == "SI":
+            listing.write(">>> ")
+        elif j == "BP":
+            listing.write(">>> ")
         elif j == "Inc" or j == "Mov" or j == "Or" or j == "Cmp" or j == "Adc" or j == "Cbw" or \
                 j == "And" or j == "Jbe":
             listing.write(">>> Ідентифікатор мнемонічного коду машинної інструкції\n\n")
@@ -42,6 +52,8 @@ for i in assembly:
                     listing.write(" додаткових данних\n")
                 elif k == "DS":
                     listing.write(" данних\n")
+        else:
+            listing.write(">>> Ідентифікатор невизнаечений, або мітка\n")
 
 
 assembly.close()

@@ -19,7 +19,7 @@ CODE    SEGMENT
     Begin:
 
         Jbe     Jump
-        Jump
+        Jump:
 
         Mov     BX, VV1[BX + DI]
         Mov     BX, 0

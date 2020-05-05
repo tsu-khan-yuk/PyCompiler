@@ -13,7 +13,11 @@ for line in assembly:
     listing.write(f"Рядок номер [{str(line_count)}]:  {line}")
     lst1 = line.split()
     for word in lst1:
-        if ":" in word or ("[" in word and "]" in word):
+        if ":" in word or ("[" in word and "]" in word) or "," in word:
+            if word.endswith(":"):
+                listing.write(f"\t{word[:-1]}" + " " * (15 - len(word[:-1])) + f"{len(word[:-1])} \t")
+                listing.write("Ідентифікатор невизначений, або мітка\n")
+
             if word.startswith("CS"):
                 listing.write("\tCS" + " "*13 + "2\tІдентифікатор кодового сегменту\n")
             elif word.startswith("ES"):
@@ -21,11 +25,14 @@ for line in assembly:
             elif word.startswith("DS"):
                 listing.write("\tDS" + " "*13 + "2\tІдентифікатор сегменту дати\n")
             listing.write("\t:" + " "*14 + "1\tОдносимвольна\n")
+
             if assume:
                 listing.write(f"\t{word[3:-1]}" + " " * (15 - len(word[3:-1])) + f"{len(word[3:-1])} \t")
                 listing.write("Ідентифікатор невизнаечений, або мітка\n")
                 if word[-1] == ",":
                     listing.write("\t," + " " * 14 + "1\tОдносимвольна\n")
+            else:
+
 
         else:
             listing.write(f"\t{word}" + " "*(15 - len(word)) + f"{len(word)} \t")

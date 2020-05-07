@@ -1,12 +1,4 @@
-###########################################################################################################
-# -> Выполнил: Иван Суханюк
-# -> Дата создания: 16.04.2020
-# -> Последние изменения: 05.05.2020
-# -> Связанеые файлы: assembly.txt
-###########################################################################################################
-
-
-def search_ident(line: str, listing) -> dict:
+def search_ident(line: str, tmp_ch: str) -> dict:
 	check = {
 		"assume": False,
 		"coma": False,
@@ -14,7 +6,6 @@ def search_ident(line: str, listing) -> dict:
 		"macro": None
 	}
 
-	tmp_var = None
 	lst1 = line.split()
 	for word in lst1:
 		if ":" in word or "[" in word or "]" in word:
@@ -67,7 +58,7 @@ def search_ident(line: str, listing) -> dict:
 			listing.write(f_str[0] + f_str[1] + f_str[2])
 			if word == "MACRO":
 				listing.write("Ідентифікатор директиви макровизначення\n")
-				check["macro"] = tmp_var
+				check["macro"] = True
 				check["lable"] = True
 			elif word == "SEGMENT":
 				listing.write("Ідентифікатор директиви початку сегменту\n")
@@ -136,103 +127,6 @@ def search_ident(line: str, listing) -> dict:
 					check["coma"] = True
 			else:
 				listing.write("Ідентифікатор невизнаечений, або мітка\n")
-				tmp_var = word
+				if not check["macro"]:
+					tmp = word
 	return check
-
-
-def tkn_counter(wrd: str) -> int:
-	if "[" not in wrd:
-		wrd = wrd.split()
-		cnt = len(wrd)
-	else:
-		cnt = 1
-	for i in wrd:
-		if ":" in i:
-			cnt += 2
-		if "[" in i or "]" in i:
-			cnt += 2
-		if "+" in i:
-			cnt += 1
-	return cnt
-
-
-# def cnt_counter()
-
-
-def token_counter(Line: str, lables: dict, val) -> "dict, str":
-	dct = dict()
-	count = 0
-	if Line.endswith(":\n") or lables["lable"] or val in Line:
-		dct[1] = 0
-		count = 1
-	if "," in Line and not lables["assume"]:
-		lst = Line.split(",")
-		lst = lst[0].split("    ") + lst
-		lst.remove("")
-		lst.remove("")
-		lst.pop(2)
-	else:
-		lst = Line.split()
-	token = 1
-	wait = 2
-
-	if "Mov" in Line or "Or" in Line or "Cmp" in Line or "Adc" in Line or "And" in Line:
-		lables["coma"] = True
-
-	for i in lst:
-		if wait == 0:
-			count += 1
-			wait = 2
-		count += token
-		token = tkn_counter(i)
-		dct[count] = token
-		if "," in i:
-			wait -= 2
-		if lables["coma"]:
-			wait -= 1
-	lables["coma"] = False
-	return dct
-
-
-def sh_up(dc: dict) -> dict:
-	"""Функция делает сдвиг вверх по ключам в словаре"""
-	dc[0] = 0
-	for i in dc.keys():
-		dc[i] = dc.get(i + 1)
-	dc.pop(0)
-	dc.pop(max(dc.keys()))
-	return dc
-
-
-def convert_str(buff_str: dict) -> str:
-	"""Функция """
-	if buff_str.get(1) == 0:
-		buff_str = sh_up(buff_str)
-		buff_str = str(buff_str)
-		buff_str = "{1" + buff_str[5:]
-	else:
-		buff_str = str(buff_str)
-		buff_str = "{0|" + buff_str[1:]
-	buff_str = buff_str.replace(", ", "|")
-	buff_str = buff_str.replace(":", "")
-	return buff_str
-
-
-assembly = open("assembly.txt", "rt")
-lsting = open("lising.txt", "w")
-line_count = 0
-f_str = ["", "", ""]
-mcro = None
-
-for ln in assembly:
-	if ln is "\n":
-		continue
-	line_count += 1
-	lsting.write(f"Рядок номер [{str(line_count)}]:  {ln}")
-	ch = search_ident(ln, lsting)
-	if ch["macro"]:
-		mcro = ch["macro"]
-	lsting.write("Таблиця: " + convert_str(token_counter(ln, ch, mcro)) + "\n\n")
-
-assembly.close()
-lsting.close()

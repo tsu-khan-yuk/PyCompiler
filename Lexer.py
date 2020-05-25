@@ -215,8 +215,8 @@ def convert_str(buff_str: dict) -> str:
 	return buff_str
 
 
-assembly = open("assembly.txt", "rt")
-lsting = open("lex.txt", "w")
+assembly = open("Files/assembly.txt", "rt")
+lsting = open("Files/lex.txt", "w")
 line_count = 0
 f_str = ["", "", ""]
 mcro = None

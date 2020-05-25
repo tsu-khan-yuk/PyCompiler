@@ -4,70 +4,95 @@
 # -> last change: 25.05.2020
 # -> related files: assemble.txt
 #######################################################################################################################
-
-# Cbw
-# Inc reg
-# Adc reg,reg
-# Cmp reg,mem
-# And mem,reg
-# Mov reg,imm
-# Or mem,imm
-# Jbe
-# Де reg – 8 або 16-розрядні РЗП
-# mem – адреса операнда в пам’яті
-# imm - 8 або 16 розрядні безпосередні дані (константи)
-
-class Opcode:
-    first_operand = None
+from PyCompiler.asm_types import asm_type, reg16, lables, macro_cmd
 
 
-class Cmd_database:
-    comand = {
-        "Cbw": {
-            "opcode": "98"
-        },
-        "Inc": {
-            "opcode": "FF"
-        },
-        "Adc": {
-            "opcode": {
-                ("r/m8", "r8"): "10",
-                ("r/m16", "r16"): "11",
-                "r8,r/m8": "12",
-                "r16,r/m16": "13"
-            }
-        },
-        "Cmp": {
-            "opcode": {
-                "r8,r/m8": "3a",
-                "r16,r/m16": "3b"
-            }
-        },
-        "And": {
-            "opcode": {
-                "r/m8,r8": "20",
-                "r/m16,r16": "21",
-            }
-        },
-        "Mov": {
-            "opcode": {
-                "r8,imm8": "b0",
-                "r16,imm16": "b8",
-                "r/m8,imm8": "c6",
-                "r/m16,imm16": "c7"
-            }
-        },
-        "Or": {
-            "opcode": {
-                "r/m8,imm8": "80",
-                "r/m16,imm16": "81",
-                "r/m16,imm8": "83"
-            }
-        },
-        "Jbe": {
-            "opcode": {
-                "rel8": "76",
-                "rel16/32": "86"
-            }
-        }
-    }
+def cmd_manager(ln: str) -> int:
+    sz = 0
+    if "DW" in ln or "DD" in ln or "DB" in ln:
+        sz = constant_size(ln)
+    elif "Mov" in ln:
+        sz = mov_processing(ln)
+    elif "Jbe" in ln or ln.endswith(":"):
+        sz = jmp_processing(ln)
+    elif "Or" in ln:
+        sz = or_processing(ln)
+    elif "Inc" in ln:
+        sz = inc_processing()
+    return sz
+
+
+def inc_processing() -> int:
+    return 1
+
+
+def or_processing(ln: str) -> int:
+    if "[" in ln:
+        return 5
+    return 0
+
+
+def jmp_processing(ln: str) -> int:
+    if ":" in ln:
+        lables.append(ln[:-1])
+        return 0
+    ln = ln.split()
+    if ln[1] in lables:
+        return 2
+    else:
+        return 4
+
+
+def mov_processing(ln: str) -> int:
+    if ":" in ln or "[" in ln:
+        return 5
+    ln = ln.split()
+    if ln[1][:-1] in reg16 and ln[2].isdigit():
+        return 3
+    return 0
+
+
+def constant_size(tmp: str) -> int:
+    tmp = tmp.split()
+    if '"' in tmp[-1]:
+        val = tmp[-1]
+        return len(val[1:-1])
+    elif tmp[1] == "DW":
+        return asm_type["DW"]
+    elif tmp[1] == "DD":
+        return asm_type["DD"]
+    elif tmp[1] == "DB":
+        return asm_type["DB"]
+
+
+with open("Files/assembly.txt", "rt") as assembly:
+    with open("Files/first.txt", "w") as listing:
+        active_seg = 0
+        active_macro = 0
+        size = 0
+        macro = ""
+        for line in assembly:
+            if line is "\n":
+                continue
+            listing.write(f"\t{(hex(size)[2:].upper())}\t{line}")
+            if "ENDM" in line:
+                listing.write("\n")
+                active_macro -= 1
+            if "SEGMENT" in line:
+                active_seg += 1
+            if active_macro > 0:
+                macro_cmd.append(line)
+            if macro in line:
+                for i in macro_cmd:
+                    listing.write(f"\t{(hex(size)[2:].upper())}\t\t\t\t{i}")
+                    size += cmd_manager(i)
+                macro_cmd.clear()
+            if active_seg > 0:
+                size += cmd_manager(line)
+            if "MACRO" in line:
+                active_macro += 1
+                macro = (line.split())[0]
+            if "ENDS" in line:
+                listing.write("\n")
+                active_seg -= 1
+                size = 0

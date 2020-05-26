@@ -58,9 +58,10 @@ reg16 = {"BX", "DI", "AX", "SI"}
 
 lables = []
 
-macro_cmd = []
+Macro = dict()
 
 data = {
     "segments": [],
     "constants": [],
+    "lables": []
 }

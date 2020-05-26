@@ -59,3 +59,8 @@ reg16 = {"BX", "DI", "AX", "SI"}
 lables = []
 
 macro_cmd = []
+
+data = {
+    "segments": [],
+    "constants": [],
+}

@@ -104,7 +104,6 @@ with open("Files/assembly.txt", "rt") as assembly:
     with open("Files/first.txt", "w") as listing:
 
         def first_tab(asm_file, lst_file):
-            lst_file.write("PyAssembler  Version 1.3\n")
             active_seg = 0
             active_macro = 0
             macro = ""
@@ -157,7 +156,7 @@ with open("Files/assembly.txt", "rt") as assembly:
 
         def fourth_tab(lst_file) -> None:
             lst_file.write("\n\nGroups and Segments\n")
-            lst_file.write("Name\t\tBit\t\tSize\tAlgin\tClass\n")
+            lst_file.write("Name\t\tBit\t\tSize\tAlign\tClass\n")
             for seg in data["segments"]:
                 lst_file.write(f"{seg[0]}\t\t32\t\t{hex(seg[1])[2:].upper()}\t\tpara\tnone\n")
 

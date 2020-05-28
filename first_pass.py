@@ -33,33 +33,33 @@ def cmd_manager(ln: str) -> int:
 
 def cmp_processing(ln: str) -> int:
     if ":" in ln:
-        return 7
+        return 5
     if "[" in ln:
         return 0
 
 
 def cbw_processing(ln: str) -> int:
-    return 2
+    return 1
 
 
 def adc_processing(ln: str) -> int:
-    return 3
+    return 2
 
 
 def and_processing(ln: str) -> int:
     if "[" in ln:
-        return 6
+        return 5
     return 0
 
 
 def inc_processing() -> int:
-    return 2
+    return 1
 
 
 def or_processing(ln: str) -> int:
     if "[" in ln:
-        return 7
-    return 0
+        return 5
+    return 2
 
 
 def jmp_processing(ln: str) -> int:
@@ -72,15 +72,15 @@ def jmp_processing(ln: str) -> int:
     if ln[1] in lables:
         return 2
     else:
-        return 6
+        return 4
 
 
 def mov_processing(ln: str) -> int:
     if ":" in ln or "[" in ln:
-        return 7
+        return 5
     ln = ln.split()
     if ln[1][:-1] in reg16 and ln[2].isdigit():
-        return 4
+        return 3
     return 0
 
 
@@ -104,7 +104,6 @@ with open("Files/assembly.txt", "rt") as assembly:
     with open("Files/first.txt", "w") as listing:
 
         def first_tab(asm_file, lst_file):
-            lst_file.write("PyAssembler  Version 1.3\n")
             active_seg = 0
             active_macro = 0
             macro = ""
@@ -159,7 +158,7 @@ with open("Files/assembly.txt", "rt") as assembly:
             lst_file.write("\n\nGroups and Segments\n")
             lst_file.write("Name\t\tBit\t\tSize\tAlgin\tClass\n")
             for seg in data["segments"]:
-                lst_file.write(f"{seg[0]}\t\t32\t\t{hex(seg[1])[2:].upper()}\t\tpara\tnone\n")
+                lst_file.write(f"{seg[0]}\t\t16\t\t{hex(seg[1])[2:].upper()}\t\tpara\tnone\n")
 
         
         first_tab(assembly, listing)
@@ -168,7 +167,39 @@ with open("Files/assembly.txt", "rt") as assembly:
         fourth_tab(listing)
 
 
-
+# Строки кода в файле листинга имеет следующий формат:
+#
+#      <глубина> <номер_строки> <смещение> <машинный_код> <исходный_код>
+#
+#      где <глубина>  показывает  уровень  вложенности включаемых файлов
+#      или макрокоманд в файле листинга.
+#
+#           Поле <номер_строки> содержит номер строки в  файле  листинга
+#      (не включая заголовки). Номера строк особенно полезны при исполь-
+#      зовании перекрестных ссылок Турбо Ассемблера,  в которых указыва-
+#      ются номер строк. Учтите, что поле <номер_строки> не соответству-
+#      ет номерам  строк  исходного  модуля.  Например,  если   в   файл
+#      включается другой файл или выполняется макрорасширение, то значе-
+#      ние поля <номер_строки> продолжает  увеличиваться,  хотя  текущая
+#      строка в исходном файле остается той же.  Чтобы преобразовать но-
+#      мер строки обратно в строку исходного кода, вы должны найти стро-
+#      ку в файле листинга,  и найти такую же строку в исходном коде (по
+#      ее внешнему виду, а не по номеру).
+#
+#           Поле <смещение> представляет смещение в текущем сегменте на-
+#      чала машинного кода, сгенерированного из соответствующей исходной
+#      строки Турбо Ассемблером.
+#
+#           Поле <машинный_код>  показывает  фактическую  последователь-
+#      ность шестнадцатиричных значений размером в байт или слово, кото-
+#      рые  ассемблированы из соответствующей исходной строки на Ассемб-
+#      лере.
+#
+#           Поле <исходный_код> - это просто исходная строка Ассемблера,
+#      с комментариями и всем,  что в ней содержится. Некоторые исходные
+#      строки (например те, которые содержат только комментарии) не  ге-
+#      нерируют никакого машинного кода.  Эти строки не  содержат  полей
+#      <смещение> и <машинный_код>, но имеют номер строки.//
 
 
 

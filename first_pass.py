@@ -156,7 +156,7 @@ with open("Files/assembly.txt", "rt") as assembly:
 
         def fourth_tab(lst_file) -> None:
             lst_file.write("\n\nGroups and Segments\n")
-            lst_file.write("Name\t\tBit\t\tSize\tAlgin\tClass\n")
+            lst_file.write("Name\t\tBit\t\tSize\tAlign\tClass\n")
             for seg in data["segments"]:
                 lst_file.write(f"{seg[0]}\t\t16\t\t{hex(seg[1])[2:].upper()}\t\tpara\tnone\n")
 

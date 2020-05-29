@@ -215,21 +215,20 @@ def convert_str(buff_str: dict) -> str:
 	return buff_str
 
 
-assembly = open("Files/assembly.txt", "rt")
-lsting = open("Files/lex.txt", "w")
-line_count = 0
-f_str = ["", "", ""]
-mcro = None
+with open("Files/assembly.txt", "rt") as assembly:
+	with open("Files/lex.txt", "w") as lsting:
+		line_count = 0
+		f_str = ["", "", ""]
+		mcro = None
 
-for ln in assembly:
-	if ln is "\n":
-		continue
-	line_count += 1
-	lsting.write(f"Рядок номер [{str(line_count)}]:  {ln}")
-	ch = search_ident(ln, lsting)
-	if ch["macro"]:
-		mcro = ch["macro"]
-	lsting.write("Таблиця: " + convert_str(token_counter(ln, ch, mcro)) + "\n\n")
+		for ln in assembly:
+			if ln is "\n":
+				continue
+			line_count += 1
+			lsting.write(f"Рядок номер [{str(line_count)}]:  {ln}")
+			ch = search_ident(ln, lsting)
+			if ch["macro"]:
+				mcro = ch["macro"]
+			lsting.write("Таблиця: " + convert_str(token_counter(ln, ch, mcro)) + "\n\n")
 
-assembly.close()
-lsting.close()
+

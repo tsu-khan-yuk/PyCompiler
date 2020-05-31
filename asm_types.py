@@ -35,8 +35,9 @@ def parser(string: str):
     cmd = findall(r"\s{8}\w{3}\s{5}\w{2}", string)
     if cmd:
         # print("command", cmd)
-        cmd_stack.append(Command(string))
-        print(cmd_stack[-1])
+        # cmd_stack.append(Command(string))
+        exmpl = Command(string)
+        print(exmpl)
     elif const:
         pass
         # print("constant", const)
@@ -57,14 +58,16 @@ class Command:
         self.__pars_processing()
 
     def __pars_processing(self):
-        buff = self.__string.split(",")
-        buff1 = buff[0].split()
-        # todo: check
-        # self.__string = sub(r",", "", self.__string)
+        tokens = self.__string.split(", ")
+        right = [tokens[1]]
+        left = tokens[0].split()
+        tokens = left + right
+        self.__name = tokens[0]
+        self.__operands = [tokens[0], tokens[1]]
 
     def __str__(self):
         s = "\n"
-        s += f"{self.__string[0]}\n"
+        s += f"{self.__string}"
         # s += f"{self.__string[1]}\n"
         # s += f"{self.__string[1]}\n\n"
         return s

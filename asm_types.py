@@ -58,6 +58,7 @@ class Command:
         self.__pars_processing()
 
     def __pars_processing(self):
+        # todo: here
         tokens = self.__string.split(", ")
         right = [tokens[1]]
         left = tokens[0].split()

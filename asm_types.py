@@ -29,10 +29,45 @@
 # imm - 8 або 16 розрядні безпосередні дані (константи)
 from re import *
 
+def parser(string: str):
+    global cmd_stack
+    const = findall(r"\s+\w{2}\s{2}\d+\w$", string)
+    cmd = findall(r"\s{8}\w{3}\s{5}\w{2}", string)
+    if cmd:
+        # print("command", cmd)
+        cmd_stack.append(Command(string))
+        print(cmd_stack[-1])
+    elif const:
+        pass
+        # print("constant", const)
+    else:
+        print()
 
-regular = {
-    r"^\s\w{, 10}\s\w{2}\s\d{, 10}\w$": "num const"
-}
+
+cmd_stack = []
+
+
+class Command:
+    __string = None
+    __name = None
+    __operands = None
+
+    def __init__(self, string: str):
+        self.__string = string
+        self.__pars_processing()
+
+    def __pars_processing(self):
+        buff = self.__string.split(",")
+        buff1 = buff[0].split()
+        # todo: check
+        # self.__string = sub(r",", "", self.__string)
+
+    def __str__(self):
+        s = "\n"
+        s += f"{self.__string[0]}\n"
+        # s += f"{self.__string[1]}\n"
+        # s += f"{self.__string[1]}\n\n"
+        return s
 
 
 class Opcode:

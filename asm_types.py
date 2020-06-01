@@ -39,8 +39,6 @@ def parser(string: str):
     elif const:
         pass
         # print("constant", const)
-    else:
-        print()
 
 
 cmd_stack = []
@@ -74,7 +72,7 @@ class Command:
             self.__operands = tokens[1]
 
     def __parse_operands(self):
-        # todo: make ability to pase operands
+        # todo: make ability to parse operands
         if isinstance(self.__operands, str):
             pass
 
@@ -85,6 +83,11 @@ class Command:
         s += f"| operands: {self.__operands}\n"
         s += "+--------------------+"
         return s
+
+
+class Operand:
+    # todo: will receive operand and calculate its` size
+    pass
 
 
 class Opcode:
@@ -105,7 +108,7 @@ class Opcode:
             return [self.__first_operand[item], self.__second_operand[item], self.__value[item]]
 
 
-comand = {
+command = {
     #todo: изменить структуру с учетом mod r/m
     "Cbw": Opcode(False, None, None, "0x98"),
     "Inc": Opcode(False, None, None, "0xff"),

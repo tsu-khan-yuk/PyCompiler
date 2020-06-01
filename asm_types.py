@@ -32,10 +32,8 @@ from re import *
 def parser(string: str):
     global cmd_stack
     const = findall(r"\s+\w{2}\s{2}\d+\w$", string)
-    cmd = findall(r"\s{8}\w{3}\s{5}\w{2}", string)
+    cmd = findall(r"\s{8}\w+(\s{5}|\s{6})\w{2}", string)
     if cmd:
-        # print("command", cmd)
-        # cmd_stack.append(Command(string))
         exmpl = Command(string)
         print(exmpl)
     elif const:
@@ -58,19 +56,34 @@ class Command:
         self.__pars_processing()
 
     def __pars_processing(self):
-        # todo: here
+        self.__string = self.__string.split("\n")[0]
         tokens = self.__string.split(", ")
-        right = [tokens[1]]
-        left = tokens[0].split()
-        tokens = left + right
-        self.__name = tokens[0]
-        self.__operands = [tokens[0], tokens[1]]
+        if len(tokens) == 2:
+            right = [tokens[1]]
+            if "[" in tokens[0]:
+                left = tokens[0].split("    ")
+                left = [left[2], left[3][(1 if "Or" not in self.__string else 2):]]
+            else:
+                left = tokens[0].split()
+            tokens = left + right
+            self.__name = tokens[0]
+            self.__operands = [tokens[1], tokens[2]]
+        else:
+            tokens = self.__string.split()
+            self.__name = tokens[0]
+            self.__operands = tokens[1]
+
+    def __parse_operands(self):
+        # todo: make ability to pase operands
+        if isinstance(self.__operands, str):
+            pass
 
     def __str__(self):
-        s = "\n"
-        s += f"{self.__string}"
-        # s += f"{self.__string[1]}\n"
-        # s += f"{self.__string[1]}\n\n"
+        s = "+-------------------+\n"
+        s += f"| string:' {self.__string}'\n"
+        s += f"| name: {self.__name}\n"
+        s += f"| operands: {self.__operands}\n"
+        s += "+--------------------+"
         return s
 
 

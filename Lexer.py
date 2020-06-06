@@ -4,6 +4,9 @@
 # -> Последние изменения: 05.05.2020
 # -> Связанеые файлы: assembly.txt
 ###########################################################################################################
+# todo: переделать Lexer.py с использование ООП!!!!!!
+# mov r"\s{8}\w{3}\s{5}\w{2}, \d+"
+from PyCompiler.asm_types import *
 
 
 def search_ident(line: str, listing) -> dict:
@@ -224,6 +227,7 @@ with open("Files/assembly.txt", "rt") as assembly:
 		for ln in assembly:
 			if ln is "\n":
 				continue
+			parser(ln)
 			line_count += 1
 			lsting.write(f"Рядок номер [{str(line_count)}]:  {ln}")
 			ch = search_ident(ln, lsting)

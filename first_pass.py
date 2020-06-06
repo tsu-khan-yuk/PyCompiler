@@ -7,7 +7,7 @@
 from PyCompiler.asm_types import asm_type, reg16, lables, Macro, data
 size = 0
 
-# todo: переделать Lexer.py с использование ООП!!!
+# todo: переделать Lexer.py с использование ООП
 
 
 def cmd_manager(ln: str) -> int:

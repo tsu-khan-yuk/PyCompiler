@@ -4,7 +4,7 @@
 # -> Последние изменения: 05.05.2020
 # -> Связанеые файлы: assembly.txt
 ###########################################################################################################
-# todo: переделать Lexer.py с использование ООП!!!!!!
+# todo: переделать lexer.py с использование ООП!!!!!!
 # mov r"\s{8}\w{3}\s{5}\w{2}, \d+"
 from PyCompiler.asm_types import *
 
@@ -219,7 +219,7 @@ def convert_str(buff_str: dict) -> str:
 
 
 with open("Files/assembly.txt", "rt") as assembly:
-	with open("Files/lex.txt", "w") as lsting:
+	with open("Files/lex_analysis.txt", "w") as lsting:
 		line_count = 0
 		f_str = ["", "", ""]
 		mcro = None
@@ -234,5 +234,6 @@ with open("Files/assembly.txt", "rt") as assembly:
 			if ch["macro"]:
 				mcro = ch["macro"]
 			lsting.write("Таблиця: " + convert_str(token_counter(ln, ch, mcro)) + "\n\n")
+
 
 

@@ -41,7 +41,11 @@ def parser(string: str):
         # print("constant", const)
 
 
-cmd_stack = []
+cmd_stack = {
+    # todo: add names of macro and segments
+    "macro": dict(),
+    "segment": dict()
+}
 
 
 class Command:
@@ -52,6 +56,7 @@ class Command:
     def __init__(self, string: str):
         self.__string = string
         self.__pars_processing()
+        # self.__parse_operands()
 
     def __pars_processing(self):
         self.__string = self.__string.split("\n")[0]
@@ -72,9 +77,14 @@ class Command:
             self.__operands = tokens[1]
 
     def __parse_operands(self):
-        # todo: make ability to parse operands
         if isinstance(self.__operands, str):
+            # todo: lables
             pass
+        elif isinstance(self.__operands, list):
+            # todo: operands
+            buff = self.__operands[:]
+            self.__operands[0] = Operand(buff[0])
+            self.__operands[1] = Operand(buff[1])
 
     def __str__(self):
         s = "+-------------------+\n"
@@ -86,8 +96,18 @@ class Command:
 
 
 class Operand:
-    # todo: will receive operand and calculate its` size
-    pass
+    __operand = None
+    __size = None
+
+    def __init__(self, operand: str):
+        self.__operand = operand
+        self.__size = 0
+        self.__operand_processing()
+
+    def __operand_processing(self):
+        # todo: add op support
+        if "[" in self.__operand:
+            pass
 
 
 class Opcode:

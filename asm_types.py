@@ -28,19 +28,7 @@
 # mem – адреса операнда в пам’яті
 # imm - 8 або 16 розрядні безпосередні дані (константи)
 from re import findall
-from .Module1.Command import Command
-
-
-def parser(string: str):
-    global cmd_stack
-    const = findall(r"\s+\w{2}\s{2}\d+\w$", string)
-    cmd = findall(r"\s{8}\w+(\s{5}|\s{6})\w{2}", string)
-    if cmd:
-        exmpl = Command(string)
-        print(exmpl)
-    elif const:
-        pass
-        # print("constant", const)
+from .Instrument.Command import Command
 
 
 cmd_stack = {
@@ -54,7 +42,7 @@ cmd_stack = {
 
 lables = []
 
-Macro = dict()
+# Macro = dict()
 
 data = {
     "segments": [],

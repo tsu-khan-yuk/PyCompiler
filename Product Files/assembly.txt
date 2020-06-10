@@ -1,5 +1,5 @@
 AxPlusOne   MACRO
-  Inc   AX
+    Inc   AX
 ENDM
 
 DATA    SEGMENT

@@ -4,7 +4,6 @@
 # -> Последние изменения: 05.05.2020
 # -> Связанеые файлы: assembly.txt
 ###########################################################################################################
-from PyCompiler.asm_types import *
 # todo: переделать lexer.py с использование ООП!!!!!!
 
 
@@ -132,7 +131,7 @@ def crazy_parsing(line: str, listing) -> dict:
                     listing.write("\t," + " " * 14 + "1\tОдносимвольна\n")
                     check["coma"] = False
             elif word == "Inc" or word == "Mov" or word == "Or" or word == "Cmp" or word == "Adc" or \
-                word == "Cbw" or word == "And" or word == "Jbe":
+                    word == "Cbw" or word == "And" or word == "Jbe":
                 listing.write("Ідентифікатор мнемонічного коду машинної інструкції\n")
                 if not (word == "Jbe" or word == "Cbw" or word == "Inc"):
                     check["coma"] = True
@@ -226,13 +225,9 @@ def main_lexer_function():
             for ln in assembly:
                 if ln is "\n":
                     continue
-                parser(ln)
                 line_count += 1
                 lsting.write(f"Рядок номер [{str(line_count)}]:  {ln}")
                 ch = crazy_parsing(ln, lsting)
                 if ch["macro"]:
                     mcro = ch["macro"]
                 lsting.write("Таблиця: " + convert_str(token_counter(ln, ch, mcro)) + "\n\n")
-
-
-

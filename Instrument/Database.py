@@ -1,4 +1,4 @@
-from PyCompiler.Module1.Opcode import Opcode
+from PyCompiler.Instrument.Opcode import Opcode
 
 
 segment_tab = {
@@ -16,7 +16,7 @@ constant_type = {
     "DB": 1
 }
 
-registers = {"BX", "DI", "AX", "SI"}
+registers = {"AX", "AH", "AL", "BX", "BH", "BL", "CX", "CL", "CH", "DI", "SI"}
 
 command = {
     # todo: изменить структуру с учетом mod r/m

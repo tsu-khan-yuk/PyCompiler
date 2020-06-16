@@ -1,4 +1,17 @@
 from PyCompiler.Instrument.Opcode import Opcode
+from re import compile
+
+
+regular_base = [
+    compile(r"[A-Z]\w+\s+(DW|DD|DB)\s+\d+\w\n$"),                                   # constant
+    compile(r'[A-Z]\w+\s+DB\s+"\w+"\n$'),                                           # string constant
+    compile(r"\w{2,3}\s+"
+            r"(((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
+            r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])),\s"
+            r"((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
+            r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])|"
+            r"(\d+))|(AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI))\n$")                       # command
+]
 
 
 segment_tab = {

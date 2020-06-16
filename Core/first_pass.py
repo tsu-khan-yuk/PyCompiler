@@ -1,7 +1,7 @@
 from PyCompiler.Instrument.Command import Command
-from PyCompiler.Instrument.CMD_stack import Stack
+from PyCompiler.Instrument.Line_stack import Stack
 from PyCompiler.Instrument.Constant import Constant
-from re import search
+from PyCompiler.Instrument.Database import regular_base
 stack = Stack()
 
 
@@ -16,14 +16,9 @@ def parser(file):
         elif "ENDM" in string or "ENDS" in string:
             pass
         else:
-            constant = search(r"[A-Z]\w+\s+(DW|DD|DB)\s+\d+\w\n$", string)
-            constant_string = search(r'[A-Z]\w+\s+DB\s+"\w+"\n$', string)
-            cmd = search(r"\w{2,3}\s+"
-                         r"(((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
-                         r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])),\s"
-                         r"((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
-                         r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])|"
-                         r"(\d+))|(AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI))\n$", string)
+            constant = regular_base[0].search(string)
+            constant_string = regular_base[1].search(string)
+            cmd = regular_base[2].search(string)
             if cmd:
                 stack.push_line(Command(string))
             elif constant or constant_string:
@@ -37,6 +32,11 @@ def main_first_pass_function():
             parser(assembly)
             assembly.seek(0)
             size = 0
+            # i = iter(stack)
             for line in assembly:
-                listing.write(f"{counter}\t\t{size}\t\t\t{line}")
+                if "END" in line:
+                    size = 0
+                # iterrator
+                listing.write(f"{counter}\t\t{size}\t\t\t{line}")       # 0x0
                 counter += 1
+    print(stack)

@@ -2,9 +2,11 @@ class Command:
     __string = None
     __name = None
     __operands = None
+    __size = None
 
     def __init__(self, string: str):
         self.__string = string
+        self.__size = 0
         self.__pars_processing()
         # self.__parse_operands()
 
@@ -36,8 +38,12 @@ class Command:
             # self.__operands[0] = Operand(buff[0])
             # self.__operands[1] = Operand(buff[1])
 
+    @property
+    def size(self):
+        return self.__size
+
     def __str__(self):
-        s = "+-------------------+\n"
+        s = "+--------------------+\n"
         s += f"| string:' {self.__string}'\n"
         s += f"| name: {self.__name}\n"
         s += f"| operands: {self.__operands}\n"

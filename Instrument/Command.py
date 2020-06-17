@@ -7,10 +7,10 @@ class Command:
     def __init__(self, string: str):
         self.__string = string
         self.__size = 0
-        self.__pars_processing()
+        self.__parse_processing()
         # self.__parse_operands()
 
-    def __pars_processing(self):
+    def __parse_processing(self):
         self.__string = self.__string.split("\n")[0]
         tokens = self.__string.split(", ")
         if len(tokens) == 2:

@@ -15,17 +15,17 @@ class Stack:
     def init_marco(self, name):
         self.__name = name
         self.__stack_key.append(f"macro {self.__index}")
-        self.__stack[self.__stack_key[-1]] = {self.__name: list()}
+        self.__stack[self.__stack_key[-1]] = [self.__name]  # {self.__name: list()}
         self.__index += 1
 
     def init_segment(self, name):
         self.__name = name
-        self.__stack_key.append(f"segemt {self.__index}")
-        self.__stack[self.__stack_key[-1]] = {self.__name: list()}
+        self.__stack_key.append(f"segment {self.__index}")
+        self.__stack[self.__stack_key[-1]] = [self.__name]   # {self.__name: list()}
         self.__index += 1
 
     def push_line(self, cmd):
-        self.__stack[self.__stack_key[-1]][self.__name].append(cmd)
+        self.__stack[self.__stack_key[-1]].append(cmd)
 
     def __iter__(self):
         self.__limit = self.__index
@@ -40,9 +40,8 @@ class Stack:
         for i in self.__stack.keys():
             string += "[======================================]\n"
             string += f" -> {i}:\n"
-            for j in self.__stack[i].values():
-                for k in j:
-                    string += f"{k}\n"
+            for j in self.__stack[i]:
+                string += f"{j}\n"
             string += "[======================================]\n"
         string += "<------------------------------------------->\n"
         return string

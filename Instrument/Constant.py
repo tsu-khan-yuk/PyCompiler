@@ -31,5 +31,5 @@ class Constant:
         string += f"| type: {self.__type}\n"
         string += f"| size: {self.__size}\n"
         string += f"| value: {self.__value}\n"
-        string += "+--------------------+\n"
+        string += "+--------------------+"
         return string

@@ -2,6 +2,7 @@ from PyCompiler.Instrument.Command import Command
 from PyCompiler.Instrument.Line_stack import Stack
 from PyCompiler.Instrument.Constant import Constant
 from PyCompiler.Instrument.Database import regular_base
+
 stack = Stack()
 
 
@@ -9,10 +10,10 @@ def parser(file):
     for string in file:
         if "SEGMENT" in string:
             buff = string.split()
-            stack.init_segment(buff[0])
+            stack.init_seg(buff[0], "S")
         elif "MACRO" in string:
             buff = string.split()
-            stack.init_marco(buff[0])
+            stack.init_seg(buff[0], "M")
         elif "ENDM" in string or "ENDS" in string:
             pass
         else:
@@ -32,11 +33,12 @@ def main_first_pass_function():
             parser(assembly)
             assembly.seek(0)
             size = 0
-            # i = iter(stack)
+            i = iter(stack)
             for line in assembly:
                 if "END" in line:
                     size = 0
-                # iterrator
-                listing.write(f"{counter}\t\t{size}\t\t\t{line}")       # 0x0
+                if not ("SEGMENT" in line or "MACRO" in line or "END" in line or line == "\n" or "ASSUME" in line
+                        or ":\n" in line):
+                    print(next(i))
+                listing.write(f"{counter}\t\t{size}\t\t\t{line}")  # 0x0
                 counter += 1
-    print(stack)

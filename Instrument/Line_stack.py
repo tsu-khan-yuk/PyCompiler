@@ -1,5 +1,7 @@
+from PyCompiler.Instrument.Database import labels
+
+
 class Stack:
-    __type = None
     __stack = None
     __cmd_index = None
     __cmd_limit = None
@@ -7,14 +9,16 @@ class Stack:
     __stack_limit = None
 
     def __init__(self):
-        self.__type = None
         self.__stack = list()
         self.__stack_index = self.__cmd_index = -1
         self.__stack_limit = self.__cmd_limit = 0
 
     def init_seg(self, name, cast):
-        cast = "macro" if cast == "M" else "segment"
-        self.__type = cast
+        if cast == "M":
+            cast = "macro"
+            labels['macro'].append(name)
+        elif cast == "S":
+            cast = "segment"
         self.__stack.append({"type": cast, "name": name, "cmds": list()})
 
     def push_line(self, line):
@@ -27,6 +31,10 @@ class Stack:
         self.__cmd_limit = len(self.__stack[0]["cmds"])
         return self
 
+    @property
+    def ret(self):
+        return self.__stack
+
     def __next__(self):
         self.__cmd_index += 1
         if self.__cmd_index >= self.__cmd_limit:
@@ -36,10 +44,8 @@ class Stack:
                 self.__cmd_limit = len(self.__stack[self.__stack_index]["cmds"])
             except IndexError:
                 pass
-        if self.__stack_index == self.__stack_limit:
-            # raise StopIteration
-            pass
-        return self.__stack[self.__stack_index]["cmds"][self.__cmd_index]
+        if not self.__stack_index == self.__stack_limit:
+            return self.__stack[self.__stack_index]["cmds"][self.__cmd_index]
 
     def __str__(self):
         string = "<------------------------------------------->\n"

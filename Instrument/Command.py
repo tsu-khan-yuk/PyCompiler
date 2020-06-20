@@ -1,3 +1,6 @@
+from PyCompiler.Instrument.Database import labels
+
+
 class Command:
     __string = None
     __name = None
@@ -8,7 +11,9 @@ class Command:
         self.__string = string
         self.__size = 0
         self.__parse_processing()
-        # self.__parse_operands()
+        if self.__operands is not None:
+            pass
+            # self.__parse_operands()
 
     def __parse_processing(self):
         self.__string = self.__string.split("\n")[0]
@@ -23,6 +28,8 @@ class Command:
             tokens = left + right
             self.__name = tokens[0]
             self.__operands = [tokens[1], tokens[2]]
+        elif len(tokens) == 1 and "Cbw" in self.__string:
+            self.__operands = None
         else:
             tokens = self.__string.split()
             self.__name = tokens[0]

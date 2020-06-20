@@ -10,7 +10,10 @@ regular_base = [
             r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])),\s"
             r"((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
             r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])|"
-            r"(\d+))|(AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI))\n$")                       # command
+            r"(\d+))|(AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI))\n$"),                       # command
+    compile(r"^\s+Jbe\s+\w+\n$"),
+    compile(r"^\s+Cbw\n$"),
+    compile(r"^\s+\w+:\n$")
 ]
 
 
@@ -27,6 +30,11 @@ constant_type = {
     "DW": 2,
     "DD": 4,
     "DB": 1
+}
+
+labels = {
+    'jump': list(),
+    'macro': list()
 }
 
 registers = {"AX", "AH", "AL", "BX", "BH", "BL", "CX", "CL", "CH", "DI", "SI"}

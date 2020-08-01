@@ -1,7 +1,7 @@
-from PyCompiler.Instrument.Command import Command
-from PyCompiler.Instrument.Line_stack import Stack
-from PyCompiler.Instrument.Constant import Constant
-from PyCompiler.Instrument.Database import regular_base, labels
+from Tools.Command import Command
+from Tools.Line_stack import Stack
+from Tools.Constant import Constant
+from Tools.Database import regular_base, labels
 stack = Stack()
 undef = []
 
@@ -18,7 +18,7 @@ def parser(file):
         elif "MACRO" in string:
             buff = string.split()
             stack.init_seg(buff[0], "M")
-        elif "END" in string:
+        elif "END" in string or string == "\n":
             pass
         else:
             # todo: check 're' for 0 or more elements in string

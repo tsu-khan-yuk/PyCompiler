@@ -1,4 +1,4 @@
-from PyCompiler.Instrument.Database import labels
+# from PyCompiler.Instrument.Database import labels
 
 
 class Command:

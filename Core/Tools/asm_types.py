@@ -28,7 +28,7 @@
 # mem – адреса операнда в пам’яті
 # imm - 8 або 16 розрядні безпосередні дані (константи)
 from re import findall
-from .Instrument.Command import Command
+# from .Instrument.Command import Command
 
 
 cmd_stack = {

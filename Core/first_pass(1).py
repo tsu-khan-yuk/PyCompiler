@@ -4,9 +4,9 @@
 # -> last change: 25.05.2020
 # -> related files: assemble.txt
 #######################################################################################################################
-from PyCompiler.asm_types import lables, Macro, data
-from PyCompiler.Instrument.Database import *
-from PyCompiler.asm_types import parser
+from Tools.asm_types import lables, data
+from Tools.Database import *
+from Tools.asm_types import parser
 
 size = 0
 
@@ -169,3 +169,6 @@ def main_first_pass_function():
             second_tab(listing)
             third_tab(listing)
             fourth_tab(listing)
+
+if __name__ == '__main__':
+    main_first_pass_function()

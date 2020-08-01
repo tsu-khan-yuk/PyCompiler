@@ -1,4 +1,4 @@
-from PyCompiler.Instrument.Database import constant_type
+from .Database import constant_type
 
 
 class Constant:

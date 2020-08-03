@@ -32,13 +32,13 @@ from re import findall
 
 
 cmd_stack = {
-    # todo: add names of macro and segments
+    # TODO: add names of macro and segments
     "macro": dict(),
     "segment": dict()
 }
 
 
-# todo: добавить структуру для записи комнад и строчек сегментов
+# TODO: добавить структуру для записи комнад и строчек сегментов
 
 lables = []
 

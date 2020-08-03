@@ -11,7 +11,7 @@ from Tools.asm_types import parser
 size = 0
 
 
-# todo: переделать lexer.py с использование ООП
+# TODO: переделать lexer.py с использование ООП
 
 
 def cmd_manager(ln: str) -> int:

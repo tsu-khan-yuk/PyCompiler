@@ -2,19 +2,24 @@ from .Opcode import Opcode
 from re import compile
 
 
-regular_base = [
-    compile(r"[A-Z]\w+\s+(DW|DD|DB)\s+\d+\w\n$"),                                   # constant
-    compile(r'[A-Z]\w+\s+DB\s+"\w+"\n$'),                                           # string constant
-    compile(r"\w{2,3}\s+"
-            r"(((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
-            r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])),\s"
-            r"((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
-            r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])|"
-            r"(\d+))|(AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI))\n$"),                       # command
-    compile(r"^\s+Jbe\s+\w+\n$"),
-    compile(r"^\s+Cbw\n$"),
-    compile(r"^\s+\w+:\n$")
-]
+regularBase = {
+    'constants': {
+        'number': compile(r"[A-Z]\w+\s+(DW|DD|DB)\s+\d+\w\n$"),
+        'string': compile(r'[A-Z]\w+\s+DB\s+"\w+"\n$')
+    },
+    'commands': {
+        'two word cmd': 
+            compile(r"\w{2,3}\s+"
+                r"(((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
+                r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])),\s"
+                r"((AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI)|"
+                r"(CS:\w{3}\[(BP|BX) \+ (SI|DI)\])|(\w+\[(BP|BX) \+ (SI|DI)\])|"
+                r"(\d+))|(AX|AH|AL|BX|BH|BL|CX|CL|CH|DI|SI))\n$"),
+        'Jbe cmd': compile(r"^\s+Jbe\s+\w+\n$"),
+        'Cbw cmd': compile(r"^\s+Cbw\n$")
+    },
+    'lables': compile(r"^\s+\w+:\n$")
+}
 
 
 segment_tab = {
@@ -40,7 +45,7 @@ labels = {
 registers = {"AX", "AH", "AL", "BX", "BH", "BL", "CX", "CL", "CH", "DI", "SI"}
 
 command = {
-    # todo: изменить структуру с учетом mod r/m
+    # TODO: изменить структуру с учетом mod r/m
     "Cbw": Opcode(False, None, None, "0x98"),
     "Inc": Opcode(False, None, None, "0xff"),
     "Adc": Opcode(False, ["r/m8", "r/m16", "r8", "r16"], ["r8", "r16", "r/m8", "r/m16"],

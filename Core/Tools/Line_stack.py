@@ -1,4 +1,4 @@
-# from PyCompiler.Instrument.Database import labels
+from .Database import labels
 
 
 class Stack:

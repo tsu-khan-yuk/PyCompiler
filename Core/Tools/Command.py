@@ -37,10 +37,10 @@ class Command:
 
     def __parse_operands(self):
         if isinstance(self.__operands, str):
-            # todo: lables
+            # TODO: lables
             pass
         elif isinstance(self.__operands, list):
-            # todo: operands
+            # TODO: operands
             buff = self.__operands[:]
             # self.__operands[0] = Operand(buff[0])
             # self.__operands[1] = Operand(buff[1])

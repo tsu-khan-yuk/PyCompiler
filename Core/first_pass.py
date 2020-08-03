@@ -1,7 +1,7 @@
-from Tools.Command import Command
-from Tools.Line_stack import Stack
-from Tools.Constant import Constant
-from Tools.Database import regular_base, labels
+from Core.Tools.Command import Command
+from Core.Tools.Line_stack import Stack
+from Core.Tools.Constant import Constant
+from Core.Tools.Database import regularBase, labels
 stack = Stack()
 undef = []
 
@@ -21,21 +21,22 @@ def parser(file):
         elif "END" in string or string == "\n":
             pass
         else:
-            # todo: check 're' for 0 or more elements in string
-            constant = regular_base[0].search(string)
-            constant_string = regular_base[1].search(string)
-            cmd = regular_base[2].search(string)
-            jump = regular_base[3].search(string)
-            cbw = regular_base[4].search(string)
-            lab = regular_base[5].search(string)
-            if cmd or jump or cbw:
-                stack.push_line(Command(string))
-            elif constant or constant_string:
-                stack.push_line(Constant(string))
-            elif lab is not None:
-                labels['jump'].append(lab.string.split())
-            else:
 
+            # TODO: check 're' for 0 or more elements in string
+            constant = regularBase['constants']['number'].search(string)
+            constantString = regularBase['constants']['string'].search(string)
+            basicCommand = regularBase['commands']['two word cmd'].search(string)
+            jumpCommand = regularBase['commands']['Jbe cmd'].search(string)
+            cbwCommand = regularBase['commands']['Cbw cmd'].search(string)
+            lableLine = regularBase['lables'].search(string)
+
+            if basicCommand or jumpCommand or cbwCommand:
+                stack.push_line(Command(string))
+            elif constant or constantString:
+                stack.push_line(Constant(string))
+            elif lableLine is not None:
+                labels['jump'].append(lableLine.string.split())
+            else:
                 undef_line_proc(string)
 
 
@@ -58,3 +59,7 @@ def main_first_pass_function():
                 listing.write(f"{counter}\t\t{size}\t\t\t{line}")  # 0x0
                 counter += 1
     print(undef)
+
+
+if __name__ == '__main__':
+    main_first_pass_function()

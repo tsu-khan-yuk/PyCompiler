@@ -8,6 +8,6 @@ class Operand:
         self.__operand_processing()
 
     def __operand_processing(self):
-        # todo: add op support
+        # TODO: add op support
         if "[" in self.__operand:
             pass
